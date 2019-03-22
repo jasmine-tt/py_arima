@@ -65,6 +65,7 @@ def nsdiffs(x, m, max_D=2, test='ch', **kwargs):
     series stationary. Will select the maximum value of ``D`` for which
     the time series is judged seasonally stationary by the statistical test.
 
+
     Parameters
     ----------
     x : array-like, shape=(n_samples, [n_features])
@@ -123,6 +124,8 @@ def ndiffs(x, alpha=0.05, test='kpss', max_d=2, **kwargs):
     estimate the number of differences required to make a given time
     series stationary. Will select the maximum value of ``d`` for which
     the time series is judged stationary by the statistical test.
+    对不同水平的“d”进行平稳性测试，以估计使给定时间序列平稳所需的差异数量。
+    将选取时间序列经统计检验为平稳的“d”的最大值
 
     Parameters
     ----------

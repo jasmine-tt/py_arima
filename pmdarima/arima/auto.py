@@ -159,6 +159,9 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         Note that if ``m`` == 1 (i.e., is non-seasonal), ``seasonal`` will be
         set to False. For more information on setting this parameter, see
         :ref:`period`.
+        季节差异期间，“m”指的是每个季节的周期数。
+        例如，“m”表示4个季度数据，12个月数据，或者1个年度(非季节性)数据。
+        默认值为1。注意，如果' ' m ' ' == 1(即，则“seasonal”将被设为False。
 
     seasonal : bool, optional (default=True)
         Whether to fit a seasonal ARIMA. Default is True. Note that if
@@ -171,18 +174,21 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         The information criterion used to select the best ARIMA model. One of
         ``pmdarima.arima.auto_arima.VALID_CRITERIA``, ('aic', 'bic', 'hqic',
         'oob').
-
+        信息准则
     alpha : float, optional (default=0.05)
         Level of the test for testing significance.
+        测试显著性的级别
 
     test : str, optional (default='kpss')
         Type of unit root test to use in order to detect stationarity if
         ``stationary`` is False and ``d`` is None. Default is 'kpss'
         (Kwiatkowski–Phillips–Schmidt–Shin).
+        平稳性检验（季节性=false）
 
     seasonal_test : str, optional (default='ch')
         This determines which seasonal unit root test is used if ``seasonal``
         is True and ``D`` is None. Default is 'ch' (Canova-Hansen).
+        季节性检验（默认是ch）
 
     stepwise : bool, optional (default=True)
         Whether to use the stepwise algorithm outlined in Hyndman and Khandakar
@@ -190,20 +196,28 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         can be significantly faster than fitting all (or a ``random`` subset
         of) hyper-parameter combinations and is less likely to over-fit
         the model.
+        stepwise: bool，可选(默认=True)是否使用Hyndman和Khandakar(2008)中描述的stepwise算法来识别最优模型参数。
+        逐步算法比拟合所有超参数组合(或一个“随机”子集)的速度要快得多，而且不太可能过度拟合模型。
 
     n_jobs : int, optional (default=1)
         The number of models to fit in parallel in the case of a grid search
         (``stepwise=False``). Default is 1, but -1 can be used to designate
         "as many as possible".
+        n个作业:int，可选(默认值为1)网格搜索中并行拟合的模型数量(' ' stepwise=False ' ')。
+        默认值是1，但是-1可以用来指定“尽可能多”。
 
     start_params : array-like, optional (default=None)
         Starting parameters for ``ARMA(p,q)``.  If None, the default is given
         by ``ARMA._fit_start_params``.
+        start_params：类似数组，可选（默认=无）
+         “ARMA（p，q）``的起始参数。 如果为None，则给出默认值 通过``ARMA._fit_start_params``
 
     transparams : bool, optional (default=True)
         Whether or not to transform the parameters to ensure stationarity.
         Uses the transformation suggested in Jones (1980).  If False,
         no checking for stationarity or invertibility is done.
+        transparams: bool，可选(默认=True)，是否转换参数以确保平稳性。使用Jones(1980)中建议的转换。
+        如果为假，则不检查平稳性或可逆性。
 
     method : str, one of {'css-mle','mle','css'}, optional (default=None)
         This is the loglikelihood to maximize.  If "css-mle", the
@@ -214,11 +228,19 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         of squares likelihood is maximized.  All three methods use
         `start_params` as starting parameters.  See above for more
         information. If fitting a seasonal ARIMA, the default is 'lbfgs'
+    method:str， {'css-mle'，'mle'，'css'}中的一个，可选(默认=None)。
+        如果“css-mle”，则条件平方和似然最大化，并将其值作为初始值，通过卡尔曼滤波计算精确似然。
+        如果“mle”，则通过卡尔曼滤波使确切的可能性最大化。
+        如果“css”条件平方和的可能性是最大的。
+        这三种方法都使用“start params”作为启动参数。
+        如果符合季节性ARIMA，默认值为“lbfgs”
 
     trend : str or None, optional (default=None)
         The trend parameter. If ``with_intercept`` is True, ``trend`` will be
         used. If ``with_intercept`` is False, the trend will be set to a no-
         intercept value.
+        趋势:str或None，可选(默认=None)趋势参数。
+        如果“with intercept”为真，则使用“trend”。如果' ' with intercept ' '为False，则趋势将被设置为no- intercept值。
 
     solver : str or None, optional (default='lbfgs')
         Solver to be used.  The default is 'lbfgs' (limited memory
@@ -228,22 +250,34 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         'powell'. By default, the limited memory BFGS uses m=12 to
         approximate the Hessian, projected gradient tolerance of 1e-8 and
         factr = 1e2. You can change these by using kwargs.
+        求解器：str或None，可选（默认='lbfgs'）
+         要使用的解算器。 默认值为'lbfgs'（内存有限 拟牛顿 - 弗莱彻 - 戈德法布 - Shanno无）。
+         其他选择是'bfgs'，'newton'（Newton-Raphson），'nm'（Nelder-Mead），'cg' -（共轭梯度），'ncg'（非共轭梯度），和
+         “鲍威尔”。 默认情况下，有限内存BFGS使用m = 12到
+         近似于Hessian，投影梯度公差为1e-8和factr = 1e2。 您可以使用kwargs更改这些内容。
 
     maxiter : int, optional (default=50)
         The maximum number of function evaluations. Default is 50.
+        maxiter: int，可选(默认值为50)函数计算的最大数量。默认是50。
 
     disp : int, optional (default=0)
         If True, convergence information is printed.  For the default
         'lbfgs' ``solver``, disp controls the frequency of the output during
         the iterations. disp < 0 means no output in this case.
+        如果为真，则输出收敛信息。对于默认的“lbfgs”“求解器”，disp控制迭代期间输出的频率。
+        在这种情况下，disp < 0表示没有输出。
 
     callback : callable, optional (default=None)
         Called after each iteration as callback(xk) where xk is the current
         parameter vector. This is only used in non-seasonal ARIMA models.
+        回调:可调用的，可选的(默认=None)，在每次迭代后调用回调(xk)，其中xk是当前参数向量。
+        这只在非季节性的ARIMA模型中使用。
 
     offset_test_args : dict, optional (default=None)
         The args to pass to the constructor of the offset (``d``) test. See
         ``pmdarima.arima.stationarity`` for more details.
+        offset_test_args：dict，optional（默认=无） 传递给offset（``d``）测试的构造函数的args。
+        看到``pmdarima.arima.stationarity``了解更多详情。
 
     seasonal_test_args : dict, optional (default=None)
         The args to pass to the constructor of the seasonal offset (``D``)
@@ -253,6 +287,8 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         Many warnings might be thrown inside of statsmodels. If
         ``suppress_warnings`` is True, all of the warnings coming from
         ``ARIMA`` will be squelched.
+        禁止警告:bool，可选(default=False)许多警告可能会被抛出到statsmodel中。
+        如果“压制警告”为真，那么来自“ARIMA”的所有警告都将被压制。
 
     error_action : str, optional (default='warn')
         If unable to fit an ``ARIMA`` due to stationarity issues, whether to
@@ -262,10 +298,17 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         ARIMA and SARIMAX models hit bugs periodically that can cause
         an otherwise healthy parameter combination to fail for reasons not
         related to pmdarima.
+        错误操作:str，可选(默认='warn')，如果由于平稳性问题无法匹配' ' ARIMA ' '，则是警告('warn')、
+        引发' ' ValueError ' ' ('raise')还是忽略('ignore')。
+        注意，默认行为是警告，失败的fit将作为None返回。
+        这是推荐的行为，因为statsmodels ARIMA和SARIMAX模型会周期性地遇到bug，
+        这些bug会导致一个健康的参数组合由于与pmdarima无关的原因而失败
 
     trace : bool, optional (default=False)
         Whether to print status on the fits. Note that this can be
         very verbose...
+    trace：bool，optional（默认值= False）
+         是否打印fit的状态。 请注意，这可以 非常冗长......
 
     random : bool, optional (default=False)
         Similar to grid searches, ``auto_arima`` provides the capability to
@@ -273,6 +316,11 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         is True, rather than perform an exhaustive search or ``stepwise``
         search, only ``n_fits`` ARIMA models will be fit (``stepwise`` must be
         False for this option to do anything).
+        random：bool，optional（默认值= False）
+         与网格搜索类似，``auto_arima``提供了能力
+         在超参数空间上执行“随机搜索”。 如果``random``
+         是真的，而不是进行详尽的搜索或“逐步”搜索，只有``n_fits`` ARIMA模型适合
+         （``stepwise``必须是假的,这个选项做任何事都）。
 
     random_state : int, long or numpy ``RandomState``, optional (default=None)
         The PRNG for when ``random=True``. Ensures replicable testing and
@@ -281,10 +329,15 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
     n_fits : int, optional (default=10)
         If ``random`` is True and a "random search" is going to be performed,
         ``n_iter`` is the number of ARIMA models to be fit.
+     n_fits：int，optional（默认值= 10）
+         如果``random``为True并且将执行“随机搜索”，
+         ``n_iter``是fit的ARIMA模型的数量
 
     return_valid_fits : bool, optional (default=False)
         If True, will return all valid ARIMA fits in a list. If False (by
         default), will only return the best fit.
+         return_valid_fits：bool，optional（默认值= False）
+         如果为True，将返回列表中的所有有效ARIMA。 如果是false（默认），只会返回最合适的。
 
     out_of_sample_size : int, optional (default=0)
         The ``ARIMA`` class can fit only a portion of the data if specified,
@@ -294,6 +347,12 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
         samples, but the observations will be added into the model's ``endog``
         and ``exog`` arrays so that future forecast values originate from the
         end of the endogenous vector.
+    out_of_sample_size：int，optional（默认值= 0）
+
+         如果指定的话，``ARIMA``类只能fit一部分数据，
+         为了保留“out of bag”样本分数。 这是
+         从时间序列的尾部来支持的例子数量并用作验证示例。
+         该模型不适合这些 样本，但观察结果将被添加到模型的“endog”中和``exog``数组，以便将来的预测值来自内源载体的结束
 
         For instance::
 
@@ -307,17 +366,25 @@ def auto_arima(y, exogenous=None, start_p=2, d=None, start_q=2, max_p=5,
     scoring : str, optional (default='mse')
         If performing validation (i.e., if ``out_of_sample_size`` > 0), the
         metric to use for scoring the out-of-sample data. One of {'mse', 'mae'}
+     得分：str，可选（默认='mse'）
+         如果执行验证（即，如果``out_of_sample_size``> 0），则
+         用于评估样本外数据的度量标准。 其中一个{'mse'，'mae'}
 
     scoring_args : dict, optional (default=None)
         A dictionary of key-word arguments to be passed to the ``scoring``
         metric.
+    scoring_args：dict，optional（默认=无）
+         要传递给“评分”的关键字参数字典度量。
 
     with_intercept : bool, optional (default=True)
         Whether to include an intercept term. Default is True.
+        是否有截距
 
     **fit_args : dict, optional (default=None)
         A dictionary of keyword arguments to pass to the :func:`ARIMA.fit`
         method.
+     ** fit_args：dict，optional（默认=无）
+         要传递给：func：`ARIMA.fit`的关键字参数字典方法。
 
     See Also
     --------

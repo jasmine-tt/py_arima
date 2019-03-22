@@ -91,6 +91,8 @@ class KPSSTest(_DifferencingStationarityTest):
     for testing a null hypothesis that an observable time series is stationary
     around a deterministic trend (i.e. trend-stationary) against the
     alternative of a unit root.
+    在计量经济学中，Kwiatkowski Phillips Schmidt Shin (KPSS)检验用于检验一个零假设，
+    即一个可观测的时间序列在一个确定性趋势(即趋势平稳)周围相对于单位根的选择是平稳的。
 
     Parameters
     ----------
@@ -101,9 +103,12 @@ class KPSSTest(_DifferencingStationarityTest):
         Whether to fit the linear model on the one vector, or an arange.
         If ``null`` is 'trend', a linear model is fit on an arange, if
         'level', it is fit on the one vector.
+        是否将线性模型拟合到一个向量或一个范围。
+         如果``null``是'trend'，则线性模型适合于区间，if'level'，它适合一个向量。
 
     lshort : bool, optional (default=True)
         Whether or not to truncate the ``l`` value in the C code.
+        是否截断C代码中的' ' l ' '值。
 
     Notes
     -----
